@@ -27,6 +27,8 @@ services:
     volumes:
       - ./sites:/var/www/html/sites:rw
       - assets-vol:/assets:rw
+    ports:
+      - "80:80"
 
   erpnext-python:
     image: frappe/erpnext-worker:${VERSION}
@@ -38,6 +40,7 @@ services:
       - REDIS_SOCKETIO=redis-socketio:6379
       - SOCKETIO_PORT=9000
       - AUTO_MIGRATE=1
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     volumes:
       - ./sites:/home/frappe/frappe-bench/sites:rw
       - assets-vol:/home/frappe/frappe-bench/sites/assets:rw
