@@ -31,7 +31,7 @@ services:
       - "80:80"
 
   erpnext-python:
-    image: frappe/erpnext-worker:${VERSION}
+    image: erpro:v12
     restart: on-failure
     environment:
       - MARIADB_HOST=${MARIADB_HOST}
@@ -44,6 +44,11 @@ services:
     volumes:
       - ./sites:/home/frappe/frappe-bench/sites:rw
       - assets-vol:/home/frappe/frappe-bench/sites/assets:rw
+    entrypoint:
+      docker-entrypoint.sh
+    command:
+      start
+    working_dir: /home/frappe/frappe-bench/sites
 
   frappe-socketio:
     image: frappe/frappe-socketio:${VERSION}
@@ -56,9 +61,8 @@ services:
       - ./sites:/home/frappe/frappe-bench/sites:rw
 
   frappe-worker-default:
-    image: frappe/erpnext-worker:${VERSION}
+    image: erpro:v12
     restart: on-failure
-    command: worker
     depends_on:
       - redis-queue
       - redis-cache
@@ -67,11 +71,15 @@ services:
       - redis-cache
     volumes:
       - ./sites:/home/frappe/frappe-bench/sites:rw
+    entrypoint:
+      docker-entrypoint.sh
+    command:
+      worker
+    working_dir: /home/frappe/frappe-bench/sites
 
   frappe-worker-short:
-    image: frappe/erpnext-worker:${VERSION}
+    image: erpro:v12
     restart: on-failure
-    command: worker
     environment:
       - WORKER_TYPE=short
     depends_on:
@@ -82,11 +90,15 @@ services:
       - redis-cache
     volumes:
       - ./sites:/home/frappe/frappe-bench/sites:rw
+    entrypoint:
+      docker-entrypoint.sh
+    command:
+      worker
+    working_dir: /home/frappe/frappe-bench/sites
 
   frappe-worker-long:
-    image: frappe/erpnext-worker:${VERSION}
+    image: erpro:v12
     restart: on-failure
-    command: worker
     environment:
       - WORKER_TYPE=long
     depends_on:
@@ -97,11 +109,15 @@ services:
       - redis-cache
     volumes:
       - ./sites:/home/frappe/frappe-bench/sites:rw
+    entrypoint:
+      docker-entrypoint.sh
+    command:
+      worker
+    working_dir: /home/frappe/frappe-bench/sites
 
   frappe-schedule:
-    image: frappe/erpnext-worker:${VERSION}
+    image: erpro:v12
     restart: on-failure
-    command: schedule
     depends_on:
       - redis-queue
       - redis-cache
@@ -110,6 +126,11 @@ services:
       - redis-cache
     volumes:
       - ./sites:/home/frappe/frappe-bench/sites:rw
+    entrypoint:
+      docker-entrypoint.sh
+    command:
+      schedule
+    working_dir: /home/frappe/frappe-bench/sites
 
 volumes:
   assets-vol:
