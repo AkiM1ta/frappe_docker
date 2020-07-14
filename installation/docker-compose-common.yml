@@ -2,25 +2,25 @@ version: '3'
 
 services:
   redis-cache:
-    image: redis:latest
+    image: images.gooalgene.com/erp/redis:latest
     restart: on-failure
     volumes:
       - redis-cache-vol:/data
 
   redis-queue:
-    image: redis:latest
+    image: images.gooalgene.com/erp/redis:latest
     restart: on-failure
     volumes:
       - redis-queue-vol:/data
 
   redis-socketio:
-    image: redis:latest
+    image: images.gooalgene.com/erp/redis:latest
     restart: on-failure
     volumes:
       - redis-socketio-vol:/data
 
   mariadb:
-    image: mariadb:10.3
+    image: images.gooalgene.com/erp/mariadb:10.3
     restart: on-failure
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
